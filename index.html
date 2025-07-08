@@ -6,6 +6,80 @@
     <title>Document</title>
 </head>
 <body>
-<script src="main.js"></script>
+<script>
+    //Lista de productos (array de objetos)
+let productos = [
+  { nombre: "Remera", precio: 5000 },
+  { nombre: "Pantalón", precio: 10000 },
+  { nombre: "Zapatillas", precio: 15000 }
+];
+
+//Carrito vacío
+let carrito = [];
+
+//Función para mostrar productos
+function mostrarProductos() {
+  let lista = "PRODUCTOS DISPONIBLES:\n";
+  for (let i = 0; i < productos.length; i++) {
+    lista += (i + 1) + ". " + productos[i].nombre + " - $" + productos[i].precio + "\n";
+  }
+  return lista;
+}
+
+//Función para agregar al carrito
+function agregarAlCarrito(produ) {
+  let producto = productos[produ - 1];
+  if (producto) {
+    carrito.push(producto);
+    alert("Agregaste: " + producto.nombre);
+  } else {
+    alert("Producto inválido");
+  }
+}
+
+//Función para mostrar el carrito
+function mostrarCarrito() {
+  if (carrito.length === 0) {
+    alert("Tu carrito está vacío");
+    return;
+  }
+
+  let mensaje = "Tu carrito:\n";
+  let total = 0;
+
+  for (let i = 0; i < carrito.length; i++) {
+    mensaje += "- " + carrito[i].nombre + " - $" + carrito[i].precio + "\n";
+    total += carrito[i].precio;
+  }
+
+  mensaje += "TOTAL: $" + total;
+  alert(mensaje);
+}
+
+//Función principal de compra
+function iniciarCompra() {
+  alert("¡Bienvenido/a a la tienda!");
+
+  let seguir = true;
+
+  while (seguir) {
+    let menu = mostrarProductos();
+    menu += "\nElegí el número del producto para comprarlo.\nEscribí 'salir' para terminar.";
+    let opcion = prompt(menu);
+
+    if (opcion === "salir") {
+      seguir = false;
+    } else {
+      let numero = parseInt(opcion);
+      agregarAlCarrito(numero);
+    }
+  }
+
+  mostrarCarrito();
+}
+
+
+iniciarCompra();
+</script>
 </body>
 </html>
