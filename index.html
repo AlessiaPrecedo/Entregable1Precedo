@@ -1,85 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+  <title>Formulario</title>
 </head>
 <body>
-<script>
-    //Lista de productos (array de objetos)
-let productos = [
-  { nombre: "Remera", precio: 5000 },
-  { nombre: "Pantalón", precio: 10000 },
-  { nombre: "Zapatillas", precio: 15000 }
-];
+  <h2>Registrarse</h2>
 
-//Carrito vacío
-let carrito = [];
+  <form id="formulario">
+    <label for="nombre">Nombre de usuario</label>
+    <input type="text" id="nombre" name="nombre" required>
 
-//Función para mostrar productos
-function mostrarProductos() {
-  let lista = "PRODUCTOS DISPONIBLES:\n";
-  for (let i = 0; i < productos.length; i++) {
-    lista += (i + 1) + ". " + productos[i].nombre + " - $" + productos[i].precio + "\n";
-  }
-  return lista;
-}
+    <label for="email">Correo electrónico:</label>
+    <input type="email" id="email" name="email" required>
 
-//Función para agregar al carrito
-function agregarAlCarrito(produ) {
-  let producto = productos[produ - 1];
-  if (producto) {
-    carrito.push(producto);
-    alert("Agregaste: " + producto.nombre);
-  } else {
-    alert("Producto inválido");
-  }
-}
-
-//Función para mostrar el carrito
-function mostrarCarrito() {
-  if (carrito.length === 0) {
-    alert("Tu carrito está vacío");
-    return;
-  }
-
-  let mensaje = "Tu carrito:\n";
-  let total = 0;
-
-  for (let i = 0; i < carrito.length; i++) {
-    mensaje += "- " + carrito[i].nombre + " - $" + carrito[i].precio + "\n";
-    total += carrito[i].precio;
-  }
-
-  mensaje += "TOTAL: $" + total;
-  alert(mensaje);
-}
-
-//Función principal de compra
-function iniciarCompra() {
-  alert("¡Bienvenido/a a la tienda!");
-
-  let seguir = true;
-
-  while (seguir) {
-    let menu = mostrarProductos();
-    menu += "\nElegí el número del producto para comprarlo.\nEscribí 'salir' para terminar.";
-    let opcion = prompt(menu);
-
-    if (opcion === "salir") {
-      seguir = false;
-    } else {
-      let numero = parseInt(opcion);
-      agregarAlCarrito(numero);
-    }
-  }
-
-  mostrarCarrito();
-}
-
-
-iniciarCompra();
-</script>
+    <label for="password">Contraseña:
+      <input type="password" name="password" id="password" required minlength="6">
+    </label>
+    <label for="confirmar-password">Confirmar contraseña:
+      <input type="password" name="confirmar-password" id="confirmar-password" required minlength="6">
+    </label>
+    <button type="submit" id="btn-confirmar">Confirmar</button>
+  </form>
 </body>
 </html>
