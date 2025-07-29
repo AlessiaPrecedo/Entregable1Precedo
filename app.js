@@ -162,6 +162,8 @@ let guardarUsuario = () => {
 
 formulario.addEventListener('submit', function (env) {
   env.preventDefault();
+  const btnConfirmar = document.getElementById('btn-confirmar');
+  
 
   const nombre = document.getElementById ('nombre').value.trim();
   const email = document.getElementById ('email').value.trim();
@@ -170,7 +172,9 @@ formulario.addEventListener('submit', function (env) {
   const nuevoUsuario = new Usuario(nombre, email, password);
 
   usuarios.push(nuevoUsuario);
-
   guardarUsuario();
+
+
+  
 
 })
