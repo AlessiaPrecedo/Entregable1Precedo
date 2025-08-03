@@ -175,4 +175,27 @@ formulario.addEventListener('submit', function (env) {
   usuarios.push(nuevoUsuario);
   guardarUsuario();
   formulario.reset();
+
+  mensaje.innerHTML = `<style>
+  p {
+    color: black;
+    font-size: 30px;
+    text-align: center;
+  }
+    div{
+   display: flex;
+flex-direction: column;
+        justify-content: center;
+        width: 500px;
+        height: 400px;
+        margin-left: 30%;
+        background: rgba(255, 163, 142, 0.35);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(19, 18, 18, 0.1);
+</style>
+  <em>
+  <p>Usuario ${nuevoUsuario.nombre} registrado exitosamente.</p>
+  </em>
+  `;
 })
