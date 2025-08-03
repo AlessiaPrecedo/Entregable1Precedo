@@ -144,6 +144,8 @@ function Usuario(nombre, email, password){
 
 const formulario = document.getElementById('formulario');
 const mensaje = document.getElementById('mensaje');
+let title = document.getElementById('title');
+title.innerHTML = "<em>¡Bienvenido!<strong>Registrate</strong></em>";
 
 let usuarios = [];
 
@@ -162,8 +164,7 @@ let guardarUsuario = () => {
 
 formulario.addEventListener('submit', function (env) {
   env.preventDefault();
-  const btnConfirmar = document.getElementById('btn-confirmar');
-  
+
 
   const nombre = document.getElementById ('nombre').value.trim();
   const email = document.getElementById ('email').value.trim();
@@ -173,8 +174,5 @@ formulario.addEventListener('submit', function (env) {
 
   usuarios.push(nuevoUsuario);
   guardarUsuario();
-
-
-  
-
+  formulario.reset();
 })

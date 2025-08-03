@@ -1,5 +1,5 @@
 body {
-background-image: url(back.webp.jpg);
+background-image: url(IMG/back.webp);
 background-size: cover;
 background-position: center;
 background-repeat: no-repeat;
@@ -10,7 +10,7 @@ background-repeat: no-repeat;
       margin-bottom: 20px;
     }
 
-    form {
+    form{
 display: flex;
 flex-direction: column;
         justify-content: center;
@@ -52,4 +52,8 @@ flex-direction: column;
     button:hover {
       background-color: #c893d1;
     }
-
+    
+    div {
+      text-align: center;
+      margin-top: 20px;
+    }
