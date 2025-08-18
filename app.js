@@ -1,201 +1,77 @@
-// Función constructora de Producto
-// app.js
 
-// Función constructora
-/*function Producto(nombre, precio) {
-  this.nombre = nombre;
-  this.precio = precio;
+class Usuario {
+  constructor(nombre, email, password) {
+    this.nombre = nombre;
+    this.email = email;
+    this.password = password;
+  }
 }
 
-// Lista de productos
-const productos = [
-  new Producto("Remera", 5000),
-  new Producto("Pantalón", 10000),
-  new Producto("Zapatillas", 15000),
-  new Producto("Camisa", 10000),
-  new Producto("Short", 12000),
-  new Producto("Buzo", 13000)
-];
-
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-const contenedor = document.getElementById("productos");
-
-function mostrarProductos() {
-  productos.forEach((producto, index) => {
-    const div = document.createElement("div");
-    div.innerHTML = `
-      <h3>${producto.nombre}</h3>
-      <p>Precio: $${producto.precio}</p>
-      <button onclick="agregarAlCarrito(${index})">Agregar al carrito</button>
-    `;
-    contenedor.appendChild(div);
-  });
-}
-function agregarAlCarrito(index) {
-  const producto = productos[index];
-  carrito.push(producto);
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  mostrarCarrito();
-}
-
-function mostrarCarrito() {
-  const lista = document.getElementById("carrito");
-  lista.innerHTML = "";
-
-  carrito.forEach(prod => {
-    const item = document.createElement("li");
-    item.textContent = `${prod.nombre} - $${prod.precio}`;
-    lista.appendChild(item);
-  });
-
-  const total = carrito.reduce((acc, prod) => acc + prod.precio, 0);
-  document.getElementById("total").textContent = `Total: $${total}`;
-}
-
-mostrarProductos();
-mostrarCarrito();
-
-function vaciarCarrito() {
-  carrito = [];
-  localStorage.removeItem("carrito");
-  mostrarCarrito();
-}
-*/
-// Función constructora de productos
-
-/*function Producto(nombre, precio) {
-  this.nombre = nombre;
-  this.precio = precio;
-}
-
-// Lista de productos
-const productos = [
-  new Producto("Remera", 5000),
-  new Producto("Pantalón", 10000),
-  new Producto("Zapatillas", 15000),
-  new Producto("Camisa", 10000),
-  new Producto("Short", 12000),
-  new Producto("Buzo", 13000)
-];
-
-// Carrito con localStorage
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
-// Mostrar productos en pantalla
-function mostrarProductos() {
-  const contenedor = document.getElementById("productos");
-  contenedor.innerHTML = "";
-
-  productos.forEach((producto, index) => {
-    const div = document.createElement("div");
-     div.innerHTML = `
-      <h3>${producto.nombre}</h3>
-      <p>Precio: $${producto.precio}</p>
-      <button onclick="agregarAlCarrito(${index})">Agregar al carrito</button>
-    `;
-    contenedor.appendChild(div);
-  });
-}
-
-// Agregar producto al carrito
-function agregarAlCarrito(index) {
-  const producto = productos[index];
-  carrito.push(producto);
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  mostrarCarrito();
-}
-
-// Mostrar contenido del carrito
-function mostrarCarrito() {
-  const lista = document.getElementById("carrito");
-  lista.innerHTML = "";
-
-  carrito.forEach(prod => {
-    const item = document.createElement("li");
-    item.textContent = `${prod.nombre} - $${prod.precio}`;
-    lista.appendChild(item);
-  });
-
-  const total = carrito.reduce((acc, prod) => acc + prod.precio, 0);
-  document.getElementById("total").textContent = `Total: $${total}`;
-}
-
-// Vaciar carrito
-function vaciarCarrito() {
-  carrito = [];
-  localStorage.removeItem("carrito");
-  mostrarCarrito();
-}
-
-// Inicializar
-mostrarProductos();
-mostrarCarrito();
-
-const input = document.getElementById("numero");
-localStorage.setItem("numero", input.value); */
-
-
-function Usuario(nombre, email, password){
-  this.nombre = nombre;
-  this.email = email;
-  this.password = password;
-}
-
-
+// referencias al DOM
 const formulario = document.getElementById('formulario');
-const mensaje = document.getElementById('mensaje');
-let title = document.getElementById('title');
-title.innerHTML = "<em>¡Bienvenido!<strong>Registrate</strong></em>";
+const inputNombre = document.getElementById('nombre');
+const inputEmail = document.getElementById('email');
+const inputPassword = document.getElementById('password');
 
 let usuarios = [];
 
+// cargar usuarios del localStorage
 if (localStorage.getItem('usuarios')) {
   try {
     usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
   } catch (error) {
-    console.error("Error localStorage:", error);
     localStorage.removeItem("usuarios");
   }
 }
 
-let guardarUsuario = () => {
+const guardarUsuario = () => {
   localStorage.setItem('usuarios', JSON.stringify(usuarios));
+};
+
+// función de validación
+function validarCampos(nombre, email, password) {
+  if (!nombre || !email || !password) {
+    Swal.fire("Error", "Todos los campos son obligatorios", "error");
+    return false;
+  }
+
+  const existe = usuarios.some(user => user.email === email);
+  if (existe) {
+    Swal.fire("Error", "El email ya está registrado", "error");
+    return false;
+  }
+
+  return true;
 }
 
-formulario.addEventListener('submit', function (env) {
-  env.preventDefault();
+formulario.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
+  const nombre = inputNombre.value.trim();
+  const email = inputEmail.value.trim();
+  const password = inputPassword.value;
 
-  const nombre = document.getElementById ('nombre').value.trim();
-  const email = document.getElementById ('email').value.trim();
-  const password = document.getElementById ('password').value;
+  if (!validarCampos(nombre, email, password)) return;
 
   const nuevoUsuario = new Usuario(nombre, email, password);
-
   usuarios.push(nuevoUsuario);
   guardarUsuario();
   formulario.reset();
 
-  mensaje.innerHTML = `<style>
-  p {
-    color: black;
-    font-size: 30px;
-    text-align: center;
+  try {
+    //Cambiá esta URL por la de tu MockAPI
+    const response = await fetch("https://64d7dfb45f9bf5b879cec9f6.mockapi.io/usuarios", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nuevoUsuario)
+    });
+
+    if (!response.ok) throw new Error("Error al registrar en la API");
+
+    Swal.fire("Éxito", `Usuario ${nuevoUsuario.nombre} registrado correctamente ✅`, "success");
+
+  } catch (error) {
+    Swal.fire("Error", "No se pudo registrar en la API ❌", "error");
   }
-    div{
-   display: flex;
-flex-direction: column;
-        justify-content: center;
-        width: 500px;
-        height: 400px;
-        margin-left: 30%;
-        background: rgba(255, 163, 142, 0.35);
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(19, 18, 18, 0.1);
-</style>
-  <em>
-  <p>Usuario ${nuevoUsuario.nombre} registrado exitosamente.</p>
-  </em>
-  `;
-})
+});
+
