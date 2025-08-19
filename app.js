@@ -59,7 +59,7 @@ formulario.addEventListener('submit', async (e) => {
   formulario.reset();
 
   try {
-    //no existe tal MockAPI
+    //not MockAPI 
     const response = await fetch("https://64d7dfb45f9bf5b879cec9f6.mockapi.io/usuarios", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
