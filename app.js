@@ -60,7 +60,7 @@ formulario.addEventListener('submit', async (e) => {
 
   try {
     //not MockAPI 
-    const response = await fetch("https://68a26ba9c5a31eb7bb1ce796.mockapi.io/api/v1/usuarios", {
+    const response = await fetch("https://68a26ba9c5a31eb7bb1ce796.mockapi.io/api/v1/usuario", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(nuevoUsuario)
