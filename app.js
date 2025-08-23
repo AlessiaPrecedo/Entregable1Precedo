@@ -53,33 +53,35 @@ formulario.addEventListener('submit', async (e) => {
 
   if (!validarCampos(nombre, email, password)) return;
 
-  const nuevoUsuario = {
-  name: nombre,   // lo que espera la API
-  email: email,
-  password: password
-};
-  usuarios.push(nuevoUsuario);
-  guardarUsuario();
-  formulario.reset();
+  const nuevoUsuario = new Usuario(nombre, email, password);
 
- //////////////////////////////////////////////////////////////////
+  // Intentar registrar en la API primero
+  try {
+    const response = await fetch("https://68a26ba9c5a31eb7bb1ce796.mockapi.io/api/v1/usuario", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nuevoUsuario)
+    });
 
-try {
-  const response = await fetch("https://68a26ba9c5a31eb7bb1ce796.mockapi.io/api/v1/usuario", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(nuevoUsuario)
-  });
+    if (!response.ok) {
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error("Error al registrar en la API");
+      throw new Error("Error al registrar en la API");
+    }
+
+    // SI LA API RESPONDE CON ÉXITO, ENTONCES:
+
+    usuarios.push(nuevoUsuario);
+
+    guardarUsuario();
+
+    Swal.fire("Éxito", `Usuario ${nuevoUsuario.nombre} registrado correctamente ✅`, "success");
+
+
+    formulario.reset();
+  } 
+  catch (error) {
+
+    Swal.fire("Error", `No se pudo registrar en la API. Por favor, intente de nuevo. ❌`, "error");
+
   }
-
-  Swal.fire("Éxito", `Usuario ${nuevoUsuario.nombre} registrado correctamente ✅`, "success");
-} 
-catch (error) {
-  Swal.fire("Error", `No se pudo registrar en la API ❌`, "error");
-}
 });
-
